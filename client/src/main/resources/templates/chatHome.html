@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天室</title>
+    <script src="${ctx}/js/jquery.min.js"></script>
+</head>
+<body>
+<h3>我的聊天室</h3>
+<form action="/client/toChat" method="post" id="messageForm">
+    朋友:
+    <select name="receiverId">
+      <#list friendList as friend>
+        <option value="${friend.userNo}">${friend.userName}</option>
+      </#list>
+    </select>
+    消息:<input type="text" name="messageContent" />
+    <input type="hidden" name="receiverName" />
+    <input type="hidden" name="receiverNick" />
+    <input type="hidden" name="senderId" value="${myInfo.userNo}"/>
+    <input type="hidden" name="senderName" value="${myInfo.userName}"/>
+    <input type="hidden" name="senderNick" value="${myInfo.headImg}"/>
+    <button id="sendBtn" type="button">发送</button>
+</form>
+</body>
+<script>
+    $("#sendBtn").click(function() {
+        $.ajax({
+            type: "post",
+            contentType: "application/x-www-form-urlencoded",
+            data: $("#messageForm").serialize(),
+            url: "${ctx}/client/toChat",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    });
+</script>
+</html>
